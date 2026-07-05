@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Factory Edge Anomaly Pipeline</title>
+    <link rel="stylesheet" href="../../assets/style.css">
+  </head>
+  <body>
+    <main class="shell">
+      <nav class="topbar">
+        <a href="../../">echo123 planning pages</a>
+        <a href="https://github.com/pablof7z/echo123/pull/3">PR #3</a>
+      </nav>
+      <section class="hero">
+        <div class="eyebrow">Plan PR example</div>
+        <h1>Factory Edge Anomaly Pipeline</h1>
+        <p class="summary">
+          Add an edge pipeline for factory sensor anomalies. Gateways compute feature windows near machines, buffer during outages, and publish normalized anomaly candidates to central ingestion. The server persists telemetry and routes severe anomalies to analyst review.
+        </p>
+        <div class="meta">
+          <span class="pill ready">Ready to implement</span>
+          <span class="pill">82 percent certainty</span>
+          <span class="pill">Controlled complexity</span>
+        </div>
+      </section>
+      <div class="grid">
+        <div>
+          <section class="section">
+            <h2>Boundaries</h2>
+            <pre class="mermaid">
+flowchart LR
+  Sensors[Sensors] --> Gateway[Edge gateway]
+  Gateway --> Buffer[Buffered features]
+  Buffer --> API[Ingest API]
+  API --> Store[Telemetry store]
+  API --> Alerts[Alert routing]
+            </pre>
+          </section>
+          <section class="section">
+            <h2>Existing Rules Or ADRs</h2>
+            <ul>
+              <li>Satisfies ADR 0001 through clear gateway, ingest, storage, alerting, and review boundaries.</li>
+              <li>Satisfies ADR 0002 if stream and model vendors remain adapters.</li>
+              <li>Satisfies ADR 0003 by using existing alert audit paths.</li>
+            </ul>
+          </section>
+          <section class="section">
+            <h2>Rule Tension And Tightening</h2>
+            <ul>
+              <li>Low risk. Vendor coupling is the main concern; normalized messages and adapters avoid it.</li>
+              <li>No rule needs loosening.</li>
+              <li>Add an edge workflow rule covering stale config, local retention, drop accounting, and remote disable controls.</li>
+            </ul>
+          </section>
+          <section class="section">
+            <h2>Alternatives Considered</h2>
+            <ul>
+              <li>Cloud raw telemetry: simple, expensive, outage-sensitive.</li>
+              <li>Full edge models: low latency, high deployment burden.</li>
+              <li>Daily batch summaries: cheap, misses urgent anomalies.</li>
+              <li>Vendor-managed monitoring: fast, less portable.</li>
+            </ul>
+          </section>
+        </div>
+        <aside>
+          <section class="card">
+            <h2>TTS Version</h2>
+            <audio controls preload="metadata" src="../../docs/plans/factory-edge-anomaly-pipeline/plan-tts.m4a"></audio>
+            <p>Audio-friendly narration generated with <code>say</code>.</p>
+          </section>
+          <section class="card">
+            <h2>Certainty</h2>
+            <div class="certainty">82%</div>
+            <p>Ready to proceed: moderate complexity, controlled surface, existing storage and alerting paths, clear rollback.</p>
+          </section>
+          <section class="card links">
+            <h2>Links</h2>
+            <a href="https://github.com/pablof7z/echo123/pull/3">Open PR</a>
+            <a href="../../docs/plans/factory-edge-anomaly-pipeline/plan.md">Detailed plan file</a>
+            <a href="../../docs/plans/factory-edge-anomaly-pipeline/plan-tts.m4a">Download audio</a>
+          </section>
+        </aside>
+      </div>
+    </main>
+    <script type="module">
+      import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs";
+      mermaid.initialize({ startOnLoad: true, theme: "neutral" });
+    </script>
+  </body>
+</html>
+

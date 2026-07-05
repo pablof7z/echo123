@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Creator Payout Ledger</title>
+    <link rel="stylesheet" href="../../assets/style.css">
+  </head>
+  <body>
+    <main class="shell">
+      <nav class="topbar">
+        <a href="../../">echo123 planning pages</a>
+        <a href="https://github.com/pablof7z/echo123/pull/2">PR #2</a>
+      </nav>
+      <section class="hero">
+        <div class="eyebrow">Plan PR example</div>
+        <h1>Creator Payout Ledger</h1>
+        <p class="summary">
+          Move creator payout state to an append-only ledger. Earnings, holds, reversals, fees, tax withholdings, and settlements become immutable events; balances become replayed projections; payout scheduling reads from those projections.
+        </p>
+        <div class="meta">
+          <span class="pill pause">Pause for architecture feedback</span>
+          <span class="pill">58 percent certainty</span>
+          <span class="pill">Source-of-truth shift</span>
+        </div>
+      </section>
+      <div class="grid">
+        <div>
+          <section class="section">
+            <h2>Boundaries</h2>
+            <pre class="mermaid">
+flowchart TD
+  Sales[Sales/refunds] --> Writer[Ledger writer]
+  Writer --> Ledger[Append-only ledger]
+  Ledger --> Projection[Balance projection]
+  Projection --> Scheduler[Payout scheduler]
+  Scheduler --> Processor[Processor adapter]
+  Ledger --> Audit[Replay/audit]
+            </pre>
+          </section>
+          <section class="section">
+            <h2>Existing Rules Or ADRs</h2>
+            <ul>
+              <li>Supports ADR 0003 by making payout state replayable and auditable.</li>
+              <li>Risks ADR 0002 if the event store depends on database-specific stream behavior.</li>
+              <li>Tensions with the rule against new persistence models.</li>
+            </ul>
+          </section>
+          <section class="section">
+            <h2>Rule Tension And Tightening</h2>
+            <ul>
+              <li>The cleanest design creates a new financial source of truth.</li>
+              <li>Loosening the persistence rule may improve auditability, but only with migration, replay, reconciliation, and rollback gates.</li>
+              <li>Add a financial-state rule requiring replay tooling, projection drift alerts, processor reconciliation, and rollback or compensation paths.</li>
+            </ul>
+          </section>
+          <section class="section">
+            <h2>Alternatives Considered</h2>
+            <ul>
+              <li>Extend existing payout table: cheap, weaker replay.</li>
+              <li>Append-only audit table beside current state: safer, drift risk.</li>
+              <li>Managed ledger product: strong controls, vendor lock-in.</li>
+              <li>Relational append-only ledger: powerful alternative, likely simpler.</li>
+            </ul>
+          </section>
+        </div>
+        <aside>
+          <section class="card">
+            <h2>TTS Version</h2>
+            <audio controls preload="metadata" src="../../docs/plans/creator-payout-ledger/plan-tts.m4a"></audio>
+            <p>Audio-friendly narration generated with <code>say</code>.</p>
+          </section>
+          <section class="card">
+            <h2>Certainty</h2>
+            <div class="certainty pause">58%</div>
+            <p>Pause: large source-of-truth shift plus a strong simpler alternative.</p>
+          </section>
+          <section class="card links">
+            <h2>Links</h2>
+            <a href="https://github.com/pablof7z/echo123/pull/2">Open PR</a>
+            <a href="../../docs/plans/creator-payout-ledger/plan.md">Detailed plan file</a>
+            <a href="../../docs/plans/creator-payout-ledger/plan-tts.m4a">Download audio</a>
+          </section>
+        </aside>
+      </div>
+    </main>
+    <script type="module">
+      import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs";
+      mermaid.initialize({ startOnLoad: true, theme: "neutral" });
+    </script>
+  </body>
+</html>
+

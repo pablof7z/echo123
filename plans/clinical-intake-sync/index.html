@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Field Clinic Intake Sync</title>
+    <link rel="stylesheet" href="../../assets/style.css">
+  </head>
+  <body>
+    <main class="shell">
+      <nav class="topbar">
+        <a href="../../">echo123 planning pages</a>
+        <a href="https://github.com/pablof7z/echo123/pull/1">PR #1</a>
+      </nav>
+      <section class="hero">
+        <div class="eyebrow">Plan PR example</div>
+        <h1>Field Clinic Intake Sync</h1>
+        <p class="summary">
+          Add an offline-first intake lane for field clinic teams. Mobile clients write signed intake packets into an encrypted local outbox, a sync adapter retries delivery, and the server validates, deduplicates, and stages packets for clinical review before patient-record promotion.
+        </p>
+        <div class="meta">
+          <span class="pill ready">Ready to implement</span>
+          <span class="pill">88 percent certainty</span>
+          <span class="pill">Bounded surface</span>
+        </div>
+      </section>
+      <div class="grid">
+        <div>
+          <section class="section">
+            <h2>Boundaries</h2>
+            <pre class="mermaid">
+flowchart LR
+  Mobile[Mobile intake] --> Outbox[Encrypted outbox]
+  Outbox --> API[Sync API]
+  API --> Review[Review queue]
+  Review --> Record[Patient record]
+  API --> Audit[Audit log]
+            </pre>
+          </section>
+          <section class="section">
+            <h2>Existing Rules Or ADRs</h2>
+            <ul>
+              <li>Satisfies ADR 0001: boundaries are explicit.</li>
+              <li>Satisfies ADR 0002: core workflow is portable.</li>
+              <li>Satisfies ADR 0003: receipt, review, promotion, duplicate handling, and rejection are auditable.</li>
+            </ul>
+          </section>
+          <section class="section">
+            <h2>Rule Tension And Tightening</h2>
+            <ul>
+              <li>Low violation risk. Temporary staging storage is not a new source of truth.</li>
+              <li>No rule needs loosening.</li>
+              <li>Consider requiring offline workflows to define idempotency, conflict policy, and reconciliation owner.</li>
+            </ul>
+          </section>
+          <section class="section">
+            <h2>Alternatives Considered</h2>
+            <ul>
+              <li>Direct mobile write to patient record: simpler, weaker conflict control.</li>
+              <li>General offline framework: broader dependency surface.</li>
+              <li>CSV export/import: familiar, poor audit and latency.</li>
+            </ul>
+          </section>
+        </div>
+        <aside>
+          <section class="card">
+            <h2>TTS Version</h2>
+            <audio controls preload="metadata" src="../../docs/plans/clinical-intake-sync/plan-tts.m4a"></audio>
+            <p>Audio-friendly narration generated with <code>say</code>.</p>
+          </section>
+          <section class="card">
+            <h2>Certainty</h2>
+            <div class="certainty">88%</div>
+            <p>This is a slum-dunk: bounded surface, clear rollback, and strong ADR alignment.</p>
+          </section>
+          <section class="card links">
+            <h2>Links</h2>
+            <a href="https://github.com/pablof7z/echo123/pull/1">Open PR</a>
+            <a href="../../docs/plans/clinical-intake-sync/plan.md">Detailed plan file</a>
+            <a href="../../docs/plans/clinical-intake-sync/plan-tts.m4a">Download audio</a>
+          </section>
+        </aside>
+      </div>
+    </main>
+    <script type="module">
+      import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs";
+      mermaid.initialize({ startOnLoad: true, theme: "neutral" });
+    </script>
+  </body>
+</html>
+
